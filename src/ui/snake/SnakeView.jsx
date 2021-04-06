@@ -22,66 +22,8 @@ const SnakeView = ({ rows, cols }) => {
     const [snake, setSnake] = useState(startingValues.snake);
     const [apple, setApple] = useState(startingValues.apple);
 
-    const snakeDirection = Math.round(Math.random() * 2 - 1);
-
-    useEffect(() => {
-        let timeout;
-        if (!shouldRender && !pause && !gameOver) {
-            timeout = setTimeout(() => {
-                setShouldRender(true);
-            }, 500 / Math.pow(30, parseFloat(speed) / 100));
-        } else {
-            setShouldRender(false);
-        }
-        if (timeout) {
-            return () => {
-                clearTimeout(timeout);
-            };
-        }
-    }, [shouldRender, speed, pause, gameOver]);
-
-    useEffect(() => {
-        if (shouldRender && !gameOver && !pause) {
-            const updatedValues = updateGame(
-                snakeDirection,
-                map,
-                snake,
-                apple,
-                {
-                    ateApple: () => {
-                        console.log("Ate apple!");
-                    },
-                    gameOver: () => {
-                        console.log("Game over!");
-                        setGameOver(true);
-                    },
-                }
-            );
-
-            setMap(updatedValues.map);
-            setSnake(updatedValues.snake);
-            setApple(updatedValues.apple);
-        }
-    }, [shouldRender, pause, apple, gameOver, map, snake, snakeDirection]);
-
-    useEffect(() => {
-        if (shouldRestart) {
-            setShouldRestart(false);
-
-            const newValues = startGame(rows, cols);
-            setMap(newValues.map);
-            setSnake(newValues.snake);
-            setApple(newValues.apple);
-
-            setPause(false);
-            setGameOver(false);
-            setShouldRender(false);
-            setSpeed(speed);
-        }
-    });
-
-    const renderMap = () => {
-        const rects = [];
+    const rects = useMemo(() => {
+        const result = [];
 
         for (let row = 0; row < rows; row++) {
             for (let col = 0; col < cols; col++) {
@@ -90,8 +32,6 @@ const SnakeView = ({ rows, cols }) => {
                 if (map[row][col] === APPLE_VALUE) className = "apple";
 
                 let border = "";
-
-                let red;
 
                 if (map[row][col] === SNAKE_VALUE) {
                     const borders = [true, true, true, true];
@@ -171,7 +111,7 @@ const SnakeView = ({ rows, cols }) => {
                     }
                 }
 
-                rects.push(
+                result.push(
                     <rect
                         key={col + row * cols}
                         x={col * CELL}
@@ -181,15 +121,72 @@ const SnakeView = ({ rows, cols }) => {
                         className={`${className}`}
                         style={{
                             strokeDasharray: border,
-                            fill: red ? "red" : null,
                         }}
                     />
                 );
             }
         }
 
-        return rects;
-    };
+        return result;
+    }, [rows, cols, map, snake]);
+
+    const snakeDirection = Math.round(Math.random() * 2 - 1);
+
+    useEffect(() => {
+        let timeout;
+        if (!shouldRender && !pause && !gameOver) {
+            timeout = setTimeout(() => {
+                setShouldRender(true);
+            }, 500 / Math.pow(30, parseFloat(speed) / 100));
+        } else {
+            setShouldRender(false);
+        }
+        if (timeout) {
+            return () => {
+                clearTimeout(timeout);
+            };
+        }
+    }, [shouldRender, speed, pause, gameOver]);
+
+    useEffect(() => {
+        if (shouldRender && !gameOver && !pause) {
+            const updatedValues = updateGame(
+                snakeDirection,
+                map,
+                snake,
+                apple,
+                {
+                    ateApple: () => {
+                        console.log("Ate apple!");
+                    },
+                    gameOver: () => {
+                        console.log("Game over!");
+                        setGameOver(true);
+                    },
+                }
+            );
+
+            setMap(updatedValues.map);
+            setSnake(updatedValues.snake);
+            setApple(updatedValues.apple);
+        }
+    }, [shouldRender, pause, apple, gameOver, map, snake, snakeDirection]);
+
+    useEffect(() => {
+        if (shouldRestart) {
+            setShouldRestart(false);
+
+            const newValues = startGame(rows, cols);
+            setMap(newValues.map);
+            setSnake(newValues.snake);
+            setApple(newValues.apple);
+
+            setPause(false);
+            setGameOver(false);
+            setShouldRender(false);
+            setSpeed(speed);
+        }
+    });
 
     return (
         <div className="snake-simulation">
@@ -199,7 +196,7 @@ const SnakeView = ({ rows, cols }) => {
                     width={CELL * cols}
                     height={CELL * rows}
                 >
-                    {renderMap()}
+                    {rects}
                 </svg>
 
                 <button
