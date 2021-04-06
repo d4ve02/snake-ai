@@ -1,0 +1,28 @@
+.snake-view {
+    border: 1px solid rgba(245, 245, 245, 0.5);
+    padding: 6px;
+
+    display: flex;
+}
+
+.snake-svg {
+    background-color: #1b2430;
+    padding: 6px;
+}
+
+.map {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(245, 245, 245, 0.03);
+}
+
+.snake {
+    fill: rgba(245, 245, 245, 0.9);
+    stroke: #1b2430da;
+    stroke-width: 2px;
+}
+
+.apple {
+    fill: rgba(255, 70, 70, 0.9);
+
+    transition: fill 0.5s ease;
+}
