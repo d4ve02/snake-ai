@@ -13,6 +13,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    font-family: "Kiwi Maru", serif;
+    color: rgba(245, 245, 245, 0.7);
 }
 
 code {

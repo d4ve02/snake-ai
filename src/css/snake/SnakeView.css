@@ -1,8 +1,13 @@
 .snake-view {
+    position: relative;
+
     border: 1px solid rgba(245, 245, 245, 0.5);
     padding: 6px;
 
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .snake-svg {
@@ -23,6 +28,141 @@
 
 .apple {
     fill: rgba(255, 70, 70, 0.9);
+    stroke: #1b2430da;
+    stroke-width: 2px;
 
     transition: fill 0.5s ease;
+}
+
+.controls {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-top: 5px;
+}
+
+.pause-button,
+.restart-button {
+    width: 25px;
+    height: 25px;
+
+    color: rgba(245, 245, 245, 0.7);
+    background-color: rgba(0, 0, 0, 0);
+    border: 1px solid rgba(245, 245, 245, 0.5);
+
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    outline: none;
+
+    cursor: pointer;
+
+    transition: color 0.3s ease, border 0.3s ease;
+}
+
+.pause-button {
+    margin-right: 5px;
+}
+
+.pause-button:hover,
+.restart-button:hover {
+    color: rgba(255, 70, 70, 0.9);
+    border: 1px solid rgba(255, 70, 70, 0.9);
+}
+
+.speed-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    background: none;
+    border: 1px solid rgba(245, 245, 245, 0.5);
+    outline: none;
+
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+.speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 20px;
+    background: #1b2430da;
+    border: 1px solid rgba(245, 245, 245, 0.5);
+    cursor: pointer;
+}
+
+.speed-slider::-moz-range-thumb {
+    width: 12px;
+    height: 20px;
+    background: #1b2430da;
+    border: 1px solid rgba(245, 245, 245, 0.5);
+    cursor: pointer;
+}
+
+.speed {
+    font-size: 13px;
+    font-weight: 400;
+
+    height: 20px;
+    border: 1px solid rgba(245, 245, 245, 0.5);
+
+    display: flex;
+    align-items: center;
+
+    padding: 0px 5px;
+
+    margin-left: auto;
+}
+
+.score {
+    font-size: 0.9rem;
+
+    margin-right: 10px;
+}
+
+.game-over {
+    font-size: 0.9rem;
+    color: rgba(255, 70, 70, 0.9);
+}
+
+.play-button {
+    position: absolute;
+
+    z-index: 10;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    border: 1px solid rgba(245, 245, 245, 0.5);
+
+    color: rgba(245, 245, 245, 0.7);
+    background-color: #1b2430b2;
+
+    font-size: 1.7rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition: filter 0.2s ease, color 0.1s ease, border-color 0.1s ease,
+        width 0.2s ease, height 0.2s ease;
+}
+
+.play-button:hover {
+    color: rgba(255, 70, 70, 0.9);
+    border-color: rgba(255, 70, 70, 0.9);
+}
+
+.play-button:focus {
+    width: 200px;
+    height: 200px;
 }

@@ -12,8 +12,11 @@ const CELL = 13;
 
 const SnakeView = ({ rows, cols }) => {
     const startingValues = useMemo(() => startGame(rows, cols), [rows, cols]);
-    const [renderScheduled, setRenderScheduled] = useState(false);
+    const [shouldRender, setShouldRender] = useState(false);
+    const [shouldRestart, setShouldRestart] = useState(false);
     const [gameOver, setGameOver] = useState(false);
+    const [pause, setPause] = useState(false);
+    const [speed, setSpeed] = useState(1);
 
     const [map, setMap] = useState(startingValues.map);
     const [snake, setSnake] = useState(startingValues.snake);
@@ -22,41 +25,60 @@ const SnakeView = ({ rows, cols }) => {
     const snakeDirection = Math.round(Math.random() * 2 - 1);
 
     useEffect(() => {
-        if (!renderScheduled && !gameOver) {
-            setTimeout(() => {
-                setRenderScheduled(true);
-            }, 10);
+        let timeout;
+        if (!shouldRender && !pause && !gameOver) {
+            timeout = setTimeout(() => {
+                setShouldRender(true);
+            }, 500 / Math.pow(30, parseFloat(speed) / 100));
+        } else {
+            setShouldRender(false);
         }
-
-        const callbacks = {
-            ateApple: () => {
-                console.log("Ate apple!");
-            },
-            gameOver: () => {
-                console.log("Game over!");
-                setGameOver(true);
-            },
-        };
-
-        if (gameOver) {
-            setRenderScheduled(false);
+        if (timeout) {
+            return () => {
+                clearTimeout(timeout);
+            };
         }
+    }, [shouldRender, speed, pause, gameOver]);
 
-        if (renderScheduled && !gameOver) {
-            setRenderScheduled(false);
+    useEffect(() => {
+        if (shouldRender && !gameOver && !pause) {
             const updatedValues = updateGame(
                 snakeDirection,
                 map,
                 snake,
                 apple,
-                callbacks
+                {
+                    ateApple: () => {
+                        console.log("Ate apple!");
+                    },
+                    gameOver: () => {
+                        console.log("Game over!");
+                        setGameOver(true);
+                    },
+                }
             );
 
             setMap(updatedValues.map);
             setSnake(updatedValues.snake);
             setApple(updatedValues.apple);
         }
-    }, [renderScheduled]);
+    }, [shouldRender, pause, apple, gameOver, map, snake, snakeDirection]);
+
+    useEffect(() => {
+        if (shouldRestart) {
+            setShouldRestart(false);
+
+            const newValues = startGame(rows, cols);
+            setMap(newValues.map);
+            setSnake(newValues.snake);
+            setApple(newValues.apple);
+
+            setPause(false);
+            setGameOver(false);
+            setShouldRender(false);
+            setSpeed(speed);
+        }
+    });
 
     const renderMap = () => {
         const rects = [];
@@ -170,10 +192,61 @@ const SnakeView = ({ rows, cols }) => {
     };
 
     return (
-        <div className="snake-view">
-            <svg className="snake-svg" width={CELL * cols} height={CELL * rows}>
-                {renderMap()}
-            </svg>
+        <div className="snake-simulation">
+            <div className="snake-view">
+                <svg
+                    className="snake-svg"
+                    width={CELL * cols}
+                    height={CELL * rows}
+                >
+                    {renderMap()}
+                </svg>
+
+                <button
+                    className="play-button"
+                    onClick={() => setPause(false)}
+                    style={{ filter: `opacity(${pause ? "1" : "0"})` }}
+                >
+                    <i className="fas fa-play" />
+                </button>
+            </div>
+            <div className="controls">
+                <span className="score">{`Score: ${snake.length - 2}`}</span>
+
+                {gameOver && <span className="game-over">Game Over</span>}
+
+                <span className="speed">{`${Math.pow(
+                    30,
+                    parseFloat(speed) / 100
+                ).toFixed(1)}x`}</span>
+
+                <input
+                    type="range"
+                    className="speed-slider"
+                    onChange={(e) => {
+                        setSpeed(e.currentTarget.value);
+                    }}
+                    value={speed}
+                />
+
+                <button
+                    className="pause-button"
+                    onClick={() => setPause(!pause)}
+                >
+                    {pause ? (
+                        <i className="fas fa-play" />
+                    ) : (
+                        <i className="fas fa-pause" />
+                    )}
+                </button>
+
+                <button
+                    className="restart-button"
+                    onClick={() => setShouldRestart(true)}
+                >
+                    <i className="fas fa-redo" />
+                </button>
+            </div>
         </div>
     );
 };
