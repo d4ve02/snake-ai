@@ -161,8 +161,3 @@
     color: rgba(255, 70, 70, 0.9);
     border-color: rgba(255, 70, 70, 0.9);
 }
-
-.play-button:focus {
-    width: 200px;
-    height: 200px;
-}

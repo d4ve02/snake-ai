@@ -202,7 +202,11 @@ const SnakeView = ({ rows, cols }) => {
                 <button
                     className="play-button"
                     onClick={() => setPause(false)}
-                    style={{ filter: `opacity(${pause ? "1" : "0"})` }}
+                    style={{
+                        filter: `opacity(${pause ? "1" : "0"})`,
+                        width: `${pause ? "1" : "2"}00px`,
+                        height: `${pause ? "1" : "2"}00px`,
+                    }}
                 >
                     <i className="fas fa-play" />
                 </button>

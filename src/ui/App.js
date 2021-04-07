@@ -5,7 +5,7 @@ import SnakeView from "./snake/SnakeView";
 function App() {
     return (
         <div>
-            <SnakeView rows={30} cols={30} />
+            <SnakeView rows={30} cols={40} />
         </div>
     );
 }
