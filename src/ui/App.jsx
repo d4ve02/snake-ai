@@ -37,9 +37,10 @@ function App() {
     }, []);
 
     return (
-        <div>
+        <main>
+            <h1>Snake AI</h1>
             <SnakeView rows={25} cols={35} model={model} cellSize={16} />
-        </div>
+        </main>
     );
 }
 
