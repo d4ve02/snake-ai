@@ -24,6 +24,7 @@
     fill: rgba(245, 245, 245, 0.9);
     stroke: #1b2430da;
     stroke-width: 2px;
+    z-index: 10;
 }
 
 .apple {
@@ -32,6 +33,22 @@
     stroke-width: 2px;
 
     transition: fill 0.5s ease;
+}
+
+.viewed.map {
+    fill: rgba(255, 255, 255, 0.1);
+    stroke: rgba(245, 245, 245, 0.03);
+}
+
+.distanceLine {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(255, 70, 70, 0.3);
+    stroke-width: 3px;
+}
+
+.hidden {
+    fill: rgba(0, 0, 0, 0);
+    stroke: rgba(0, 0, 0, 0);
 }
 
 .controls {
