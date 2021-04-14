@@ -2,7 +2,7 @@
 
 Hello and welcome to the Snake AI project! The goal of this project is developing an AI that learns how to play snake while providing an explanation of how the development process is being carried out and hopefully a resource someone can learn something from!
 
-The project is hosted live on [link], feel free to suggest any improvements!
+The project is currently hosted on [this website](https://davide-halili-snake-ai.herokuapp.com/), feel free to suggest any improvements!
 
 ## :scroll: Small guide
 
