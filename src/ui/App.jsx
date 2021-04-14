@@ -43,12 +43,26 @@ export default class App extends Component {
             model = this.state.model;
         }
 
+        const rows = 25;
+        const cols = 25;
+        const maxCellSize = 18;
+
+        let cellSize = parseInt((window.innerWidth - 50) / cols);
+        if (cellSize > maxCellSize) {
+            cellSize = maxCellSize;
+        }
+
         return (
             <div className="main">
                 <TopHeader />
 
                 <h1 className="title">Snake AI</h1>
-                <SnakeView rows={25} cols={25} model={model} cellSize={18} />
+                <SnakeView
+                    rows={rows}
+                    cols={cols}
+                    model={model}
+                    cellSize={cellSize}
+                />
 
                 <DevelopmentLogs />
                 <Footer />

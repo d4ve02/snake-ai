@@ -92,3 +92,15 @@ img:hover {
         margin-top: 1rem;
     }
 }
+
+@media screen and (max-width: 500px) {
+    .section {
+        width: calc(100% - 20px);
+        margin: 0px 10px;
+        max-width: 1000px;
+    }
+
+    .text {
+        padding: 0.5rem 0.3rem;
+    }
+}
