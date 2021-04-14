@@ -40,7 +40,7 @@ export const fromDNAtoWeights = (dna) => {
 };
 
 // You can train your own AI and try it here!
-// Insert the weight and bias valyes here and you're good to go!
+// Insert the weight and bias values here and you're good to go!
 // The weight structure is described above!
 const dna = [
     1.1280617850134398,
