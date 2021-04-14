@@ -1,3 +1,7 @@
+.snake-simulation {
+    width: fit-content;
+}
+
 .snake-view {
     position: relative;
 

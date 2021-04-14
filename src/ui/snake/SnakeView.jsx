@@ -39,28 +39,32 @@ export default class SnakeView extends Component {
     }
 
     componentDidMount = () => {
-        this.update();
+        const { speed } = this.state;
+        this.createNewTimer(speed);
     };
 
-    update = () => {
-        const {
-            pause,
-            gameOver,
-            speed,
-            map,
-            snake,
-            apple,
-            showInfo,
-        } = this.state;
+    updateLogic = () => {
+        const { pause, gameOver, map, snake, apple, showInfo } = this.state;
 
         if (!pause && !gameOver) {
             this.updateData();
             this.updateRects(map, snake, apple, showInfo);
         }
+    };
 
-        setTimeout(() => {
-            this.update();
+    createNewTimer = (speed) => {
+        const intervalId = setInterval(() => {
+            this.updateLogic();
+
+            const { speed: newSpeed } = this.state;
+
+            if (newSpeed !== speed) {
+                clearInterval(intervalId);
+                this.createNewTimer(newSpeed);
+            }
         }, 500 / Math.pow(30, parseFloat(speed) / 100));
+
+        this.setState({ intervalId });
     };
 
     updateData = () => {
@@ -83,7 +87,6 @@ export default class SnakeView extends Component {
 
             if (model) {
                 const prediction = model.predict(input).arraySync()[0];
-                console.log(input.arraySync());
 
                 for (let i = 0; i < prediction.length; i++) {
                     if (prediction[i] > prediction[move]) {
@@ -156,6 +159,7 @@ export default class SnakeView extends Component {
                 x2={cellSize / 2 + cellSize * apple[0]}
                 y2={cellSize / 2 + cellSize * apple[1]}
                 className={`distanceLine ${controlClass}`}
+                key="line"
             />
         );
 
@@ -168,6 +172,7 @@ export default class SnakeView extends Component {
                     cellSize *
                     Math.sqrt(rows * rows + cols * cols)
                 }
+                key="circle"
                 className={`distanceLine ${controlClass}`}
             />
         );
