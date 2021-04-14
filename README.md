@@ -1,70 +1,78 @@
-# Getting Started with Create React App
+# Snake AI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Hello and welcome to the Snake AI project! The goal of this project is developing an AI that learns how to play snake while providing an explanation of how the development process is being carried out and hopefully a resource someone can learn something from!
 
-## Available Scripts
+The project is hosted live on [link], feel free to suggest any improvements!
 
-In the project directory, you can run:
+## :scroll: Small guide
 
-### `npm start`
+To run the front-end with the game simulation:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+	$ git clone https://github.com/d4ve02/snake-ai.git
+	$ cd snake-ai
+	$ npm i
+	$ npm start
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+I've also included the script I used to train the AI with Python:
 
-### `npm test`
+```
+	$ cd python
+	$ mkdir saved
+	$ cd saved
+	$ mkdir db
+	$ mkdir dna
+	$ mkdir plots
+	$ cd ..
+	$ python ./main.py
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## :notebook: How is the AI structured
 
-### `npm run build`
+The AI is a neural network with 3 layers:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. One hidden layer with 8 nodes and 26 inputs
+2. Another hidden layer with 8 nodes
+3. One output layer with 3 nodes
+   All nodes have a sigmoid activation function. The input size is 26.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### How the inputs are calculated
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+The 26 input values are divided into "proximity sensors" (24 nodes) and information about the apple's location (2 nodes).
 
-### `npm run eject`
+The proximity sensors are highlighted on the "information mode" in the game. Basically, they're 6 cells close to the snake's head, and for each of these cells we have 4 nodes in a one-hot configuration (one and only one of these nodes is active at a time). Each one of these 4 nodes encodes what that sensor sees: a wall, a part of the snake, an apple, or nothing. These are the first 24 nodes.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The last 2 nodes encode information about the apple's location, sepcifically the distance between apple and snake and the angle between them.
+The distance value is normalized into a (0, 1) domain while the angle is normalized into a (-1, +1) domain.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### How the outputs are interpreted
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+The three output nodes decide where the snake will be heading. The node with the highest value decides what the snake's direction will be.
+The first node encodes the FORWARD direction, the second encodes RIGHT and the third encodes LEFT.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## :bulb: You can train your own AI!
 
-## Learn More
+You can train your own AI and try it here! All you have to do is get your weights and biases and flatten them in a single dimension array, and copy paste the array into the dna.js file!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## :pencil2: Development Logs
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Hello and welcome to the Snake AI project!
+My name is Davide Halili and this is the first development log of this project! I'm attempting to develop the best Snake AI I can, using genetic algorithms to tune a neural network's parameters until I get a <i>really</i> good AI.
+The current AI structure is a neural network with:
 
-### Code Splitting
+1. an input layer with 26 input neurons, click the "i" button above to know what the inputs are!
+2. two hidden layers with 8 neurons each
+3. one output layer with 3 neurons that encode LEFT, STRAIGHT or RIGHT
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+I've trained a decent AI at this point, but it has
+four big issues:
 
-### Analyzing the Bundle Size
+1. it can't get any apples if they're touching the wall
+2. it can't get any apples on the left side of the map
+3. it doesn't know how to avoid hitting itself
+4. it sometimes gets stuck in loops
+   The best way to solve these issues is: changing the map size randomly during training to give the AI more opportunities to learn how to avoid hitting itself; simply training more.
+   The next step is implementing the same training algorithm using C++ instead of Python, so I can get better performance and train with bigger population size.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Until then, have a fun time coding! Dave :)

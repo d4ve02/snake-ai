@@ -138,7 +138,7 @@ export const getAppleInfo = (snake, apple, rows, cols) => {
     let distance = getDistanceBetweenPoints(head, apple);
     let angle = getAngleBetweenSnakeAndApple(head, second, apple);
 
-    //normalize
+    //normalize data
     distance /= Math.sqrt(rows * rows + cols * cols);
     angle /= Math.PI;
 
@@ -200,7 +200,7 @@ const generateEmptyMap = (rows, cols) => {
 export const startGame = (rows, cols) => {
     const map = generateEmptyMap(rows, cols);
 
-    //Generate snake
+    //Generate snake, 2 cell long
     const headX = parseInt(Math.random() * (cols - 1));
     const headY = parseInt(Math.random() * (rows - 1));
 

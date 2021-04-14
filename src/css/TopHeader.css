@@ -1,0 +1,22 @@
+.topHeader {
+    width: 100%;
+    background-color: #1b2430da;
+
+    padding: 0.5rem 0rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 0.8rem;
+}
+
+.topHeader a i {
+    padding-right: 0.5rem;
+}
+
+.topHeader a {
+    text-decoration: none;
+
+    color: rgba(245, 245, 245, 0.7);
+}
